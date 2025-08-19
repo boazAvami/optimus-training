@@ -1,0 +1,54 @@
+.container {
+  padding: 2rem;
+  max-width: 800px;
+  margin: auto;
+}
+
+.products {
+  margin-bottom: 2rem;
+  height: calc(100vh - 350px);
+  overflow-y: auto;
+}
+
+.summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h2 {
+    margin: 0;
+  }
+
+  button {
+    padding: 0.5rem 1rem;
+    margin-left: 0.5rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  .clear {
+    background: #ff4d4f;
+    color: white;
+
+    &:hover {
+      background: #d9363e;
+    }
+  }
+
+  .checkout {
+    background: #4cafef;
+    color: white;
+
+    &:hover {
+      background: #3a8bcc;
+    }
+  }
+}
+
+.empty {
+  text-align: center;
+  font-size: 1.5rem;
+  padding: 3rem;
+}

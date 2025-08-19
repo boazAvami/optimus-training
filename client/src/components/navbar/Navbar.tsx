@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
-import { ShoppingCart } from "lucide-react"; // lightweight icon library
+import { ShoppingCart } from "lucide-react";
 import styles from "./Navbar.module.scss"
+import CartIconWithCount from "../CartCountableIcon/CartCountableIcon";
 
 const Navbar = () => {
   return (
@@ -10,7 +11,7 @@ const Navbar = () => {
       </div>
       <div className={styles.cart}>
         <Link to="/cart" className={styles.cartButton}>
-          <ShoppingCart size={24} />
+          <CartIconWithCount/>
         </Link>
       </div>
     </nav>
