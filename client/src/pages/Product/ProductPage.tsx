@@ -2,12 +2,12 @@ import React, { useContext } from "react";
 import { useParams } from "react-router-dom";
 import styles from "./ProductPage.module.scss";
 import { products } from "@repo/shared/src/mocks";
-import { CartContext } from "../../context/CartContext/CartContext";
+import { CartContext, useCartContext } from "../../context/CartContext/CartContext";
 
 const ProductPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const product = products.find((p) => p.id === id);
-  const cartContext = useContext(CartContext);
+  const cartContext = useCartContext();
 
 
   if (!product) {
@@ -15,7 +15,7 @@ const ProductPage: React.FC = () => {
   }
 
   const handleAddToCart = () => {
-    cartContext?.addItem(product);
+    cartContext.addItem(product);
   };
 
   return (

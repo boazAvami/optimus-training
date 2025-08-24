@@ -1,7 +1,6 @@
-import { useContext } from "react";
 import styles from "./ProductCard.module.scss";
 import type { Product } from "@repo/shared/src/entities";
-import { CartContext } from "../../context/CartContext/CartContext";
+import { useCartContext } from "../../context/CartContext/CartContext";
 import { useNavigate } from "react-router-dom"; // Assuming react-router-dom
 
 interface Props {
@@ -9,8 +8,8 @@ interface Props {
 }
 
 export const ProductCard = ({ product }: Props) => {
-    const cartContext = useContext(CartContext);
-    const addItem = cartContext?.addItem;
+    const cartContext = useCartContext()
+    const addItem = cartContext.addItem;
     const navigate = useNavigate();
 
     const handleNavigate = () => {
