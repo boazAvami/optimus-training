@@ -14,19 +14,18 @@ export interface CartContextType {
 }
 
 
-export const cartContext = createContext<CartContextType | undefined>(
+export const CartContext = createContext<CartContextType | undefined>(
   undefined,
 );
 
 export const useCartContext = () => {
-  const context = useContext(cartContext);
+  const context = useContext(CartContext);
   if (!context) {
     throw new Error(
-      'useAuthContext must be used within an AuthContextProvider',
+      'useCartContext must be used within an cartContextProvider',
     );
   }
 
   return context;
 };
 
-export const CartContext = createContext<CartContextType | undefined>(undefined);
