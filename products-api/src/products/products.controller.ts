@@ -10,7 +10,7 @@ import {
 import { ProductsService } from './products.service';
 import { UpdatePriceDto } from './dto/update-price.dto';
 import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiParam } from '@nestjs/swagger';
-import { Product as ProductModel } from './models/product.model';
+import { ProductModel } from '@repo/shared';
 
 @ApiTags('products')
 @Controller('products')
@@ -29,7 +29,7 @@ export class ProductsController {
   @ApiBody({ schema: { type: 'object', properties: { ids: { type: 'array', items: { type: 'number' } } } } })
   @ApiResponse({ status: 200, description: 'Products matching the IDs', type: [ProductModel] })
   getProductsByIds(@Body('ids') ids: number[]): Promise<ProductModel[]> {
-    return this.productService.findByIds(ids);
+    return this.productService.findByIds(ids? ids : []);
   }
 
   @Get('exist')

@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import styles from "./ProductCard.module.scss";
-import type { Product } from "@repo/shared/src/entities";
+import type { ProductModel } from "@repo/shared/";
 import { CartContext } from "../../context/CartContext/CartContext";
 import { useNavigate } from "react-router-dom"; // Assuming react-router-dom
 

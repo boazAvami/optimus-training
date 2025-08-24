@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { Category as CategoryModel } from './models/category.model';
+import { CategoryModel } from '@repo/shared';
 
 @ApiTags('categories')
 @Controller('categories')

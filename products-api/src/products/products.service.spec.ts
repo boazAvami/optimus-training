@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ProductsService } from './products.service';
 import { Repository, In } from 'typeorm';
 import { Product } from './product.entity';
-import { ProductStatusEnum } from '@repo/shared/src/entities/Product';
+import { ProductStatusEnum } from '@repo/shared';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { NotFoundException } from '@nestjs/common';
 

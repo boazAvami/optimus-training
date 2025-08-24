@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, In } from 'typeorm';
 import { Product } from './product.entity';
 import { ProductStatusEnum } from '@repo/shared';
-import { Product as ProductModel } from './models/product.model';
+import {  ProductModel } from '@repo/shared';
 import { plainToInstance } from 'class-transformer';
 
 @Injectable()
