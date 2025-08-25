@@ -22,7 +22,6 @@ export class OrdersService {
 
   async onModuleInit() {
     await this.productsClient.connect();
-    console.log('Connected to PRODUCTS_SERVICE');
   }
 
   async create(dto: CreateOrderDto): Promise<OrderModel> {
@@ -64,7 +63,7 @@ export class OrdersService {
         return {
           productId: p.productId,
           amount: p.amount,
-          product, // attach product info
+          product,
         };
       }),
     });

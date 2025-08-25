@@ -1,4 +1,3 @@
-// src/orders/orders.service.spec.ts
 import { Test, TestingModule } from '@nestjs/testing';
 import { OrdersService } from './orders.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
