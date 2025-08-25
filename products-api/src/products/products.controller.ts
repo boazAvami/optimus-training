@@ -11,6 +11,7 @@ import { ProductsService } from './products.service';
 import { UpdatePriceDto } from './dto/update-price.dto';
 import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiParam } from '@nestjs/swagger';
 import { ProductModel } from '@repo/shared';
+import { MessagePattern } from '@nestjs/microservices';
 
 @ApiTags('products')
 @Controller('products')
@@ -25,6 +26,7 @@ export class ProductsController {
   }
 
   @Get()
+  @MessagePattern({ cmd: 'findProductsByIds' })
   @ApiOperation({ summary: 'Get products by IDs' })
   @ApiBody({ schema: { type: 'object', properties: { ids: { type: 'array', items: { type: 'number' } } } } })
   @ApiResponse({ status: 200, description: 'Products matching the IDs', type: [ProductModel] })
@@ -33,6 +35,7 @@ export class ProductsController {
   }
 
   @Get('exist')
+  @MessagePattern({ cmd: 'doProductsExist' })
   @ApiOperation({ summary: 'Check if products exist by IDs' })
   @ApiBody({ schema: { type: 'object', properties: { ids: { type: 'array', items: { type: 'number' } } } } })
   @ApiResponse({ status: 200, description: 'Whether products exist', schema: { example: { exist: true } } })
