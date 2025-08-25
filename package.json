@@ -1,9 +1,22 @@
 {
   "private": true,
+  "packageManager": "npm@10.9.3",
   "workspaces": [
     "client",
-    "products",
-    "orders",
+    "products-api",
+    "orders-api",
     "shared"
-  ]
+  ],
+  "scripts": {
+    "dev": "turbo run dev --parallel",
+    "build": "turbo run build",
+    "lint": "turbo run lint"
+  },
+  "dependencies": {
+    "pg": "^8.16.3",
+    "typeorm": "^0.3.26"
+  },
+  "devDependencies": {
+    "turbo": "^2.5.6"
+  }
 }
