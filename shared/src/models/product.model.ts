@@ -1,8 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ProductStatusEnum } from '@repo/shared';
-import { Category } from '../../categories/models/category.model';
+import { CategoryModel } from './category.model';
 
-export class Product {
+export enum ProductStatusEnum {
+  ACTIVE = 'ACTIVE',
+  DISABLED = 'DISABLED',
+}
+
+export class ProductModel {
   @ApiProperty()
   id: number;
 
@@ -27,6 +31,6 @@ export class Product {
   @ApiProperty()
   upload_date: Date;
 
-  @ApiProperty({ type: [Category] })
-  categories: Category[];
+  @ApiProperty({ type: [CategoryModel] })
+  categories: CategoryModel[];
 }
