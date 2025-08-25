@@ -1,0 +1,22 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  height: 93dvh;
+}
+
+.container {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.products {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+  overflow-y: auto;
+  padding-bottom: 10rem;
+}
+
