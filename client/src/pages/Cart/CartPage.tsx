@@ -1,14 +1,11 @@
 import React, { useContext } from "react";
 import CartProductCard from "../../components/CartProduct/CartProductCard";
 import styles from "./cartPage.module.scss";
-import { CartContext } from "../../context/CartContext/CartContext";
+import {useCartContext } from "../../context/CartContext/CartContext";
 
 const CartPage: React.FC = () => {
-    const cart = useContext(CartContext);
 
-    if (!cart) {
-        return <div className={styles.empty}>Cart context not available</div>;
-    }
+    const cart = useCartContext();
 
     const { products, removeItem, updateQuantity, clearCart } = cart;
     const totalPrice = products.reduce(
