@@ -8,6 +8,7 @@ export class ProductInOrderModel {
   @ApiProperty({ example: 2 })
   amount: number;
 }
+
 export class OrderModel {
   @ApiProperty({ example: 1 })
   id: number;

@@ -5,6 +5,7 @@
     "client",
     "products-api",
     "orders-api",
+    "api-gateway",
     "shared"
   ],
   "scripts": {

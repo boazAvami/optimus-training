@@ -1,19 +1,19 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   
-    const config = new DocumentBuilder()
-    .setTitle('E-commerce API')
-    .setDescription('Orders API documentation')
-    .setVersion('1.0')
-    .build();
+  app.connectMicroservice({
+    transport: Transport.TCP,
+    options: {
+      host: process.env.MICROSERVICE_HOST || '127.0.0.1',
+      port: parseInt(process.env.MICROSERVICE_PORT ?? '4000', 10),
+    },
+  });
 
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
-  
-  await app.listen(process.env.PORT ?? 3000);
+  await app.startAllMicroservices();
 }
 bootstrap();
+ 

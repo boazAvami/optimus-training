@@ -1,0 +1,90 @@
+### PRODUCTS ###
+
+# Get all active products
+GET http://localhost:3000/products/active
+
+###
+
+# Get products by IDs
+POST http://localhost:3000/products/by-ids
+Content-Type: application/json
+
+{
+  "ids": [1, 2, 3]
+}
+
+###
+
+# Check if products exist
+POST http://localhost:3000/products/exist
+Content-Type: application/json
+
+{
+  "ids": [1, 2, 3,3000]
+}
+
+###
+
+# Update product price
+PATCH http://localhost:3000/products/1/price
+Content-Type: application/json
+
+{
+  "price": 199.99
+}
+
+###
+
+# Disable a product
+PATCH http://localhost:3000/products/1/disable
+
+###
+
+# Delete a product
+DELETE http://localhost:3000/products/1
+
+
+### CATEGORIES ###
+
+# Get all categories
+GET http://localhost:3000/categories
+
+
+### ORDERS ###
+
+# Get all orders
+GET http://localhost:3000/orders
+
+###
+
+# Get order by ID
+GET http://localhost:3000/orders/1
+
+###
+
+# Create order
+POST http://localhost:3000/orders
+Content-Type: application/json
+
+{
+  "products": [
+    { "productId": 3, "amount": 2 },
+    { "productId": 2, "amount": 1 }
+  ]
+}
+
+###
+
+# Update product amount in order
+PATCH http://localhost:3000/orders/1/product
+Content-Type: application/json
+
+{
+  "productId": 2,
+  "amount": 5
+}
+
+###
+
+# Delete order
+DELETE http://localhost:3000/orders/1

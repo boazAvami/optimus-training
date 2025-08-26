@@ -4,7 +4,7 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Order } from './entities/order.entity';
 import { ProductOrder } from './entities/product-order.entity';
 import { Repository } from 'typeorm';
-import { CreateOrderDto } from './dto/create-order.dto';
+import { CreateOrderDto } from '@repo/shared/src/dtos/create-order.dto';
 import { OrderModel } from '@repo/shared';
 
 describe('OrdersService', () => {
