@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { plainToInstance } from 'class-transformer';
 import { Order } from './entities/order.entity';
 import { ProductOrder } from './entities/product-order.entity';
-import { CreateOrderDto } from './dto/create-order.dto';
+import { CreateOrderDto } from '@repo/shared/src/dtos/create-order.dto';
 import { OrderModel, ProductInOrderModel, ProductModel } from '@repo/shared';
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
@@ -22,7 +22,6 @@ export class OrdersService {
 
   async onModuleInit() {
     await this.productsClient.connect();
-    console.log('Connected to PRODUCTS_SERVICE');
   }
 
   async create(dto: CreateOrderDto): Promise<OrderModel> {
@@ -64,7 +63,7 @@ export class OrdersService {
         return {
           productId: p.productId,
           amount: p.amount,
-          product, // attach product info
+          product,
         };
       }),
     });

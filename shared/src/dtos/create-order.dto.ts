@@ -1,14 +1,10 @@
 import { IsArray, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
-
-class ProductInOrderDto {
-  productId: number;
-  amount: number;
-}
+import { OrderProductDto } from './order-product.dto';
 
 export class CreateOrderDto {
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => ProductInOrderDto)
-  products: ProductInOrderDto[];
+  @Type(() => OrderProductDto)
+  products: OrderProductDto[];
 }
