@@ -1,10 +1,9 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { ProductCard } from "../../components/ProductCard/ProductCard";
 import { SideNav } from "../../components/SideNav/SideNav";
 import { SortOptions } from "../../components/SideNav/SortOptions";
 import styles from "./HomePage.module.scss";
 
-// Import Orval hook
 import { useProductsControllerGetActiveProducts } from "../../api/generated/endpoints";
 
 
@@ -13,45 +12,41 @@ const Home = () => {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("date");
 
-  // useQuery hook from Orval
   const { data: products = [], isLoading, error } = useProductsControllerGetActiveProducts();
 
-  if (isLoading) {
-    return <div className={styles.loading}>Loading...</div>;
-  }
+  const categories = useMemo(() => {
+    return [
+      ...new Set(
+        products.flatMap((p) => p.categories?.map((c) => c.name) ?? [])
+      ),
+    ];
+  }, [products]);
 
-  if (error) {
-    return <div className={styles.error}>Failed to load products</div>;
-  }
-
-
-  const categories = [
-    ...new Set(
-      products.flatMap((p) => p.categories?.map((c) => c.name) ?? [])
-    ),
-  ];
-
-  let filtered = products.filter((p) =>
-    p.name.toLowerCase().includes(search.toLowerCase())
-  );
-
-  if (category) {
-    filtered = filtered.filter(
-      (p) => p.categories?.some((c) => c.name === category)
+  const filtered = useMemo(() => {
+    let result = products.filter((p) =>
+      p.name.toLowerCase().includes(search.toLowerCase())
     );
-  }
 
-  if (sort === SortOptions.PriceAsc) {
-    filtered.sort((a, b) => a.price - b.price);
+    if (category) {
+      result = result.filter((p) =>
+        p.categories?.some((c) => c.name === category)
+      );
+    }
 
-  } else if (sort === SortOptions.PriceDesc) {
-    filtered.sort((a, b) => b.price - a.price);
-  } else if (sort === SortOptions.Date) {
-    filtered.sort(
-      (a, b) =>
-        new Date(b.uploadDate).getTime() - new Date(a.uploadDate).getTime()
-    );
-  }
+    if (sort === SortOptions.PriceAsc) {
+      result.sort((a, b) => a.price - b.price);
+    } else if (sort === SortOptions.PriceDesc) {
+      result.sort((a, b) => b.price - a.price);
+    } else if (sort === SortOptions.Date) {
+      result.sort(
+        (a, b) =>
+          new Date(b.uploadDate).getTime() - new Date(a.uploadDate).getTime()
+      );
+    }
+
+    return result;
+  }, [products, category, search, sort]);
+
 
   return (
     <div className={styles.page}>
