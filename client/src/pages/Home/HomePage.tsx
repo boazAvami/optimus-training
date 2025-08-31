@@ -1,34 +1,55 @@
-import { products as mockProducts } from "@repo/shared/src/mocks/products";
+import { useState } from "react";
 import { ProductCard } from "../../components/ProductCard/ProductCard";
 import { SideNav } from "../../components/SideNav/SideNav";
 import { SortOptions } from "../../components/SideNav/SortOptions";
 import styles from "./HomePage.module.scss";
-import { useState } from "react";
+
+// Import Orval hook
+import { useProductsControllerGetActiveProducts } from "../../api/generated/endpoints";
+
 
 const Home = () => {
   const [category, setCategory] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("date");
 
-  const categories = [...new Set(mockProducts.map((p) => p.category))];
+  // useQuery hook from Orval
+  const { data: products = [], isLoading, error } = useProductsControllerGetActiveProducts();
 
-  let filtered = mockProducts.filter((p) =>
+  if (isLoading) {
+    return <div className={styles.loading}>Loading...</div>;
+  }
+
+  if (error) {
+    return <div className={styles.error}>Failed to load products</div>;
+  }
+
+
+  const categories = [
+    ...new Set(
+      products.flatMap((p) => p.categories?.map((c) => c.name) ?? [])
+    ),
+  ];
+
+  let filtered = products.filter((p) =>
     p.name.toLowerCase().includes(search.toLowerCase())
   );
 
   if (category) {
-    filtered = filtered.filter((p) => p.category.name === category);
+    filtered = filtered.filter(
+      (p) => p.categories?.some((c) => c.name === category)
+    );
   }
 
   if (sort === SortOptions.PriceAsc) {
     filtered.sort((a, b) => a.price - b.price);
+
   } else if (sort === SortOptions.PriceDesc) {
     filtered.sort((a, b) => b.price - a.price);
   } else if (sort === SortOptions.Date) {
     filtered.sort(
       (a, b) =>
-        new Date(b.uploadedDate).getTime() -
-        new Date(a.uploadedDate).getTime()
+        new Date(b.uploadDate).getTime() - new Date(a.uploadDate).getTime()
     );
   }
 
@@ -37,7 +58,7 @@ const Home = () => {
       <div className={styles.container}>
         <div className={styles.sidenav}>
           <SideNav
-            categories={categories.map((cat) => cat.name)}
+            categories={categories}
             selectedCategory={category}
             onCategoryChange={setCategory}
             search={search}

@@ -10,7 +10,7 @@ const CartProductCard: React.FC<CartProductCardProps> = ({ product, onRemove, on
 
             <div className={styles.details}>
                 <h3 className={styles.name}>{product.name}</h3>
-                <div className={styles.meta}>${product.price.toFixed(2)} • Qty: {product.quantity}</div>
+                <div className={styles.meta}>${product.price} • Qty: {product.quantity}</div>
 
                 <div className={styles.controls}>
                     <button onClick={() => onUpdateQuantity(product.id, product.quantity - 1)}>-</button>

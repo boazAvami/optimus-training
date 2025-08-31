@@ -20,16 +20,16 @@ export class ProductModel {
   price: number;
 
   @ApiProperty()
-  seller_name: string;
+  sellerName: string;
 
   @ApiProperty()
-  image_url: string;
+  imageUrl: string;
 
   @ApiProperty({ enum: ProductStatusEnum })
   status: ProductStatusEnum;
 
   @ApiProperty()
-  upload_date: Date;
+  uploadDate: Date;
 
   @ApiProperty({ type: [CategoryModel] })
   categories: CategoryModel[];

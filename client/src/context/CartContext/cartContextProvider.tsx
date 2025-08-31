@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { CartContext, type CartContextType, type ProductWithQuantity } from "./CartContext";
-import type { Product } from "@repo/shared";
+import type { ProductModel } from "../../api/generated/model";
 import toast, { Toaster } from "react-hot-toast";
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
@@ -13,7 +13,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem("cart", JSON.stringify(cartItems));
   }, [cartItems]);
 
-  const addItem = (item: Product) => {
+  const addItem = (item: ProductModel) => {
     setCartItems((prev) => {
       const existing = prev.find((i) => i.id === item.id);
       if (existing) return prev.map((i) => i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i);
@@ -23,11 +23,11 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     toast.success(`${item.name} added to cart`);
   };
 
-  const removeItem = (id: string) => {
+  const removeItem = (id: number) => {
     setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
   };
 
-  const updateQuantity = (id: string, quantity: number) => {
+  const updateQuantity = (id: number, quantity: number) => {
     setCartItems((prevItems) =>
       prevItems
         .map((item) => (item.id === id ? { ...item, quantity } : item))

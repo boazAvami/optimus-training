@@ -14,12 +14,13 @@ import { ClientProxy } from '@nestjs/microservices';
 import { OrderModel, UpdateProductInOrderDto } from '@repo/shared';
 import { CreateOrderDto     } from '@repo/shared';
 import { OrderProductDto } from '@repo/shared';
+import { ordersServiceName } from 'src/tokens';
 
 @ApiTags('orders')
 @Controller('orders')
 export class OrdersController {
   constructor(
-    @Inject('ORDERS_SERVICE') private readonly ordersClient: ClientProxy,
+    @Inject(ordersServiceName) private readonly ordersClient: ClientProxy,
   ) {}
 
   @Get()

@@ -6,7 +6,7 @@ import { Order } from './entities/order.entity';
 import { ProductOrder } from './entities/product-order.entity';
 import { CreateOrderDto } from '@repo/shared/src/dtos/create-order.dto';
 import { OrderModel, ProductInOrderModel, ProductModel } from '@repo/shared';
-import { ClientProxy } from '@nestjs/microservices';
+import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 
 @Injectable()
@@ -14,11 +14,11 @@ export class OrdersService {
   constructor(
     @InjectRepository(Order)
     private readonly ordersRepo: Repository<Order>,
-    @InjectRepository(ProductOrder) 
+    @InjectRepository(ProductOrder)
     private readonly productOrdersRepo: Repository<ProductOrder>,
-    @Inject('PRODUCTS_SERVICE') 
+    @Inject('PRODUCTS_SERVICE')
     private readonly productsClient: ClientProxy,
-  ) {}
+  ) { }
 
   async onModuleInit() {
     await this.productsClient.connect();
@@ -28,10 +28,10 @@ export class OrdersService {
     const productIds = dto.products.map((p) => p.productId);
 
     const exist = await lastValueFrom(
-      this.productsClient.send<boolean>({ cmd: 'doProductsExist' }, {ids: productIds}),
+      this.productsClient.send<boolean>({ cmd: 'doProductsExist' }, { ids: productIds }),
     );
     if (!exist) {
-      throw new BadRequestException('One or more products do not exist');
+      throw new RpcException('One or more products do not exist');
     }
 
     const order = this.ordersRepo.create();
@@ -49,7 +49,7 @@ export class OrdersService {
       relations: ['products'],
     });
     if (!order) throw new NotFoundException(`Order ${id} not found`);
- 
+
     const productIds = order.products.map((p) => p.productId);
     const productDetails = await lastValueFrom(
       this.productsClient.send<ProductModel[]>({ cmd: 'findProductsByIds' }, productIds),
@@ -87,7 +87,7 @@ export class OrdersService {
     return orders.map(this.mapToOrderModel);
   }
 
- 
+
 
   async updateAmount(orderId: number, productId: number, amount: number): Promise<OrderModel> {
     const productOrder = await this.productOrdersRepo.findOne({

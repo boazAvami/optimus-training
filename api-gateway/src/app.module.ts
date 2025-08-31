@@ -3,12 +3,14 @@ import { ProductsController } from './products/products.controller';
 import { CategoriesController } from './categories/categories.controller';
 import { OrdersController } from './orders/orders.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { ordersServiceName, productsServiceName } from './tokens';
+
 
 @Module({
   imports: [
     ClientsModule.register([
       {
-        name: 'PRODUCTS_SERVICE',
+        name: productsServiceName,
         transport: Transport.TCP,
         options: {
           host: '127.0.0.1',
@@ -16,7 +18,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         },
       },
       {
-        name: 'ORDERS_SERVICE',
+        name: ordersServiceName,
         transport: Transport.TCP,
         options: {
           host: '127.0.0.1',
