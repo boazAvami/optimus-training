@@ -11,7 +11,7 @@ const ProductPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const cartContext = useCartContext();
 
-  const { mutate: fetchProducts } = useProductsControllerGetProductsByIds({
+  const { mutate: fetchProducts} = useProductsControllerGetProductsByIds({
     mutation: {
       onSuccess: (res) => {
         setProduct(res[0] ?? null);
