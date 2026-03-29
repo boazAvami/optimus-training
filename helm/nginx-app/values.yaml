@@ -1,0 +1,21 @@
+replicaCount: 2
+
+image:
+  repository: nginx
+  tag: "1.23.0"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+
+config:
+  server_name: "localhost"
+  root: "/usr/share/nginx/html"
+
+serviceAccount:
+  create: false
+  automount: true
+
+ingress:
+  enabled: false

@@ -6,12 +6,14 @@ import { Order } from './entities/order.entity';
 import { ProductOrder } from './entities/product-order.entity';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 
+export const productsServicName = 'PRODUCTS_SERVICE';
+
 @Module({
   imports: [
     TypeOrmModule.forFeature([Order, ProductOrder]),
     ClientsModule.register([
       {
-        name: 'PRODUCTS_SERVICE',
+        name: productsServicName,
         transport: Transport.TCP,
         options: {
           host: process.env.PRODUCTS_SERVICE_HOST || 'localhost',

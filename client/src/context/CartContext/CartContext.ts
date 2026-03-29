@@ -1,15 +1,15 @@
-import type { Product } from "@repo/shared/";
+import type { ProductModel } from "../../api/generated/model";
 import { createContext, useContext } from "react";
 
-export type ProductWithQuantity = Product & {
+export type ProductWithQuantity = ProductModel & {
     quantity: number;  
 };
 
 export interface CartContextType {
     products: ProductWithQuantity[];
-    addItem: (product: Product) => void;
-    removeItem: (id: string) => void;
-    updateQuantity: (id: string, quantity: number) => void;
+    addItem: (product: ProductModel) => void;
+    removeItem: (id: number) => void;
+    updateQuantity: (id: number, quantity: number) => void;
     clearCart: () => void;
 }
 

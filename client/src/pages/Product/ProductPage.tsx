@@ -1,18 +1,41 @@
-import React, { useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styles from "./ProductPage.module.scss";
-import { products } from "@repo/shared/src/mocks";
-import { CartContext, useCartContext } from "../../context/CartContext/CartContext";
+import { useCartContext } from "../../context/CartContext/CartContext";
+import type { ProductModel } from "../../api/generated/model";
+import { useProductsControllerGetProductsByIds } from "../../api/generated/endpoints";
 
 const ProductPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const product = products.find((p) => p.id === id);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const cartContext = useCartContext();
 
+  const { mutate: fetchProducts} = useProductsControllerGetProductsByIds({
+    mutation: {
+      onSuccess: (res) => {
+        setProduct(res[0] ?? null);
+        setLoading(false);
+      },
+      onError: (err) => {
+        setError("Failed to fetch product");
+        setLoading(false);
+      },
+    },
+  });
 
-  if (!product) {
-    return <div className={styles.notFound}>Product not found</div>;
-  }
+  useEffect(() => {
+    if (id) {
+      fetchProducts({ data: { ids: [Number(id)] } });
+    }
+  }, [id, fetchProducts]);
+  const [product, setProduct] = useState<ProductModel | null>(null);
+
+
+
+  if (loading) return <div className={styles.loading}>Loading...</div>;
+  if (error) return <div className={styles.error}>{error}</div>;
+  if (!product) return <div className={styles.notFound}>Product not found</div>;
 
   const handleAddToCart = () => {
     cartContext.addItem(product);
@@ -27,23 +50,6 @@ const ProductPage: React.FC = () => {
           <p className={styles.description}>{product.description}</p>
           <p className={styles.price}>${product.price}</p>
           <p className={styles.seller}>Seller: {product.sellerName}</p>
-          <p className={styles.category}>Category: {product.category.name}</p>
-
-          {product.additionalInfo && (
-            <div className={styles.additionalInfo}>
-              <table>
-                <tbody>
-                  {Object.entries(product.additionalInfo).map(([key, value]) => (
-                    <tr key={key}>
-                      <th>{key}</th>
-                      <td>{value}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-
           <button className={styles.addToCart} onClick={handleAddToCart}>
             Add to Cart
           </button>

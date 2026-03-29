@@ -1,11 +1,13 @@
-import React, { useContext } from "react";
+import React, { useState } from "react";
 import CartProductCard from "../../components/CartProduct/CartProductCard";
 import styles from "./cartPage.module.scss";
-import {useCartContext } from "../../context/CartContext/CartContext";
+import { useCartContext } from "../../context/CartContext/CartContext";
+import CheckoutDialog from "../../components/CheckoutDialog/CheckoutDialog";
 
 const CartPage: React.FC = () => {
 
     const cart = useCartContext();
+    const [isDialogOpen, setDialogOpen] = useState(false);
 
     const { products, removeItem, updateQuantity, clearCart } = cart;
     const totalPrice = products.reduce(
@@ -38,9 +40,15 @@ const CartPage: React.FC = () => {
                     <button className={styles.clear} onClick={clearCart}>
                         Clear Cart
                     </button>
-                    <button className={styles.checkout}>Checkout</button></div>
-
+                    <button className={styles.checkout} onClick={() => setDialogOpen(true)}>Checkout</button></div>
             </div>
+            <CheckoutDialog
+                isOpen={isDialogOpen}
+                onSendOrder={clearCart}
+                onClose={() => setDialogOpen(false)}
+                products={products}
+                total={totalPrice}
+            />;
         </div>
     );
 };

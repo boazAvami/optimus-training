@@ -1,43 +1,59 @@
-import { products as mockProducts } from "@repo/shared/src/mocks/products";
+import { useMemo, useState } from "react";
 import { ProductCard } from "../../components/ProductCard/ProductCard";
 import { SideNav } from "../../components/SideNav/SideNav";
 import { SortOptions } from "../../components/SideNav/SortOptions";
 import styles from "./HomePage.module.scss";
-import { useState } from "react";
+
+import { useProductsControllerGetActiveProducts } from "../../api/generated/endpoints";
+
 
 const Home = () => {
   const [category, setCategory] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("date");
 
-  const categories = [...new Set(mockProducts.map((p) => p.category))];
+  const { data: products = [], isLoading, error } = useProductsControllerGetActiveProducts();
 
-  let filtered = mockProducts.filter((p) =>
-    p.name.toLowerCase().includes(search.toLowerCase())
-  );
+  const categories = useMemo(() => {
+    return [
+      ...new Set(
+        products.flatMap((p) => p.categories?.map((c) => c.name) ?? [])
+      ),
+    ];
+  }, [products]);
 
-  if (category) {
-    filtered = filtered.filter((p) => p.category.name === category);
-  }
-
-  if (sort === SortOptions.PriceAsc) {
-    filtered.sort((a, b) => a.price - b.price);
-  } else if (sort === SortOptions.PriceDesc) {
-    filtered.sort((a, b) => b.price - a.price);
-  } else if (sort === SortOptions.Date) {
-    filtered.sort(
-      (a, b) =>
-        new Date(b.uploadedDate).getTime() -
-        new Date(a.uploadedDate).getTime()
+  const filtered = useMemo(() => {
+    let result = products.filter((p) =>
+      p.name.toLowerCase().includes(search.toLowerCase())
     );
-  }
+
+    if (category) {
+      result = result.filter((p) =>
+        p.categories?.some((c) => c.name === category)
+      );
+    }
+
+    if (sort === SortOptions.PriceAsc) {
+      result.sort((a, b) => a.price - b.price);
+    } else if (sort === SortOptions.PriceDesc) {
+      result.sort((a, b) => b.price - a.price);
+    } else if (sort === SortOptions.Date) {
+      result.sort(
+        (a, b) =>
+          new Date(b.uploadDate).getTime() - new Date(a.uploadDate).getTime()
+      );
+    }
+
+    return result;
+  }, [products, category, search, sort]);
+
 
   return (
     <div className={styles.page}>
       <div className={styles.container}>
         <div className={styles.sidenav}>
           <SideNav
-            categories={categories.map((cat) => cat.name)}
+            categories={categories}
             selectedCategory={category}
             onCategoryChange={setCategory}
             search={search}

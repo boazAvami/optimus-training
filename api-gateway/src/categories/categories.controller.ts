@@ -2,12 +2,13 @@ import { Controller, Get, Inject } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { ClientProxy } from '@nestjs/microservices';
 import { CategoryModel } from '@repo/shared';
+import { productsServiceName } from 'src/tokens';
 
 @ApiTags('categories')
 @Controller('categories')
 export class CategoriesController {
   constructor(
-    @Inject('PRODUCTS_SERVICE') private readonly productsClient: ClientProxy,
+    @Inject(productsServiceName) private readonly productsClient: ClientProxy,
   ) {}
 
   @Get()
